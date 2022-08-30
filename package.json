@@ -24,5 +24,8 @@
   },
   "prettier": {
     "singleQuote": true
+  },
+  "dependencies": {
+    "node-fetch": "^3.2.10"
   }
 }
