@@ -103,9 +103,9 @@ const drawCross = (fieldSize) => {
 };
 
 const getMap = async () => {
-  const res = await fetch(`${url}map/${candidateId}/goal`)
+  const res = await fetch(`${url}map/${candidateId}/goal`);
   const data = await res.json();
-  console.log(data);
-}
+  return data.goal;
+};
 
-getMap()
+const goal = await getMap();
