@@ -4,7 +4,7 @@ const candidateId = '6a98f65e-7883-4566-a536-1670d5be5964';
 const url = 'https://challenge.crossmint.io/api/';
 
 const request = async (args) => {
-  const { entity, ...rest } = { ...args }; // pull out only body args
+  const { entity, id, ...rest } = { ...args }; // pull out only body args
   const res = await fetch(`${url}${entity}s`, {
     method: 'POST',
     headers: {
@@ -17,10 +17,13 @@ const request = async (args) => {
     }),
   });
   if (!res.ok) {
+    console.log(res);
     const data = await res.json();
     console.log(data);
     console.log(args);
     throw new Error(`Error: ${res.status}, ${res.statusText}`);
+  } else {
+    console.log('success', id);
   }
 };
 
@@ -31,6 +34,7 @@ const goal = await (async () => {
   return data.goal;
 })();
 
+let count = 0; // test
 const callers = goal.reduce((callers, row, i) => {
   // iterates through each row in goal
   const currentRow = row.reduce((filtered, item, j) => {
@@ -44,6 +48,7 @@ const callers = goal.reduce((callers, row, i) => {
       // object that will be returned
       row: i,
       column: j,
+      id: count,
     };
     let entity;
     if (itemArr.length > 1) {
@@ -54,18 +59,40 @@ const callers = goal.reduce((callers, row, i) => {
     } else entity = itemArr[0];
     argsObj.entity = entity;
     filtered.push(argsObj);
+    count++;
     return filtered;
   }, []);
   if (currentRow.length) callers.push(currentRow); // filters out empty arrays
   return callers;
 }, []);
+// console.log(callers);
 
-// callers.forEach((caller) => {
-//   caller.forEach((item) => request(item));
-// });
+// const callAPI = () => {
+//   callers.forEach((caller) => {
+//     caller.forEach((item) =>
+//       setTimeout(() => {
+//         request(item);
+//       }, 5000)
+//     );
+//   });
+// };
+
+// const interval = setInterval(() => {
+//   callAPI();
+//   console.log('calling api...');
+// }, 10000);
+// setTimeout(() => {
+//   clearInterval(interval), console.log('stopping interval');
+// }, 120000);
+
+// DELETION CODE
 
 const deleteEntity = async (args) => {
-  const { entity, ...rest } = { ...args }; // pull out only body args
+  const { entity, id, ...rest } = { ...args }; // pull out only body args
+  if (entity == 'space') {
+    console.log('space');
+    return;
+  }
   const res = await fetch(`${url}${entity}s`, {
     method: 'DELETE',
     headers: {
@@ -79,35 +106,52 @@ const deleteEntity = async (args) => {
     }),
   });
   if (!res.ok) {
+    console.log(res);
     const data = await res.json();
     console.log(args);
-    throw new Error('Error:', data);
+    throw new Error(data);
   } else {
-    console.log('success');
-    console.log(res);
+    console.log('success', id);
   }
 };
-// console.log(callers);
 
+const writeId = async (item) => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+      console.log(item.id);
+    }, 2000)
+  })
+}
+
+const deleteAll = () => {
+  callers.forEach(async (row) => {
+    // console.log(row);
+    for (const caller of row) {
+      await writeId(caller)
+      // console.log(caller)
+      // await deleteEntity(caller);
+    }
+  });
+};
+
+deleteAll();
+
+const leftURL =
+  'https://raw.githubusercontent.com/ginahend94/megaverse/main/leftovers.json?token=GHSAT0AAAAAABYFSVQSS6NLOYC6UWT2OM36YYP7LSQ';
 const leftovers = await (async () => {
-  const res = await fetch(
-    'https://raw.githubusercontent.com/ginahend94/megaverse/main/leftovers.json?token=GHSAT0AAAAAABYFSVQS4XPFHJALPYE6UBYQYYP67MQ'
-  );
+  const res = await fetch(url);
   const data = await res.json();
   return data;
-})();
+});
 
 // console.log(leftovers)
 
-leftovers.forEach((item) =>
-  setTimeout(() => {
-    deleteEntity(item);
-  }, 5000)
-);
-
-// callers.forEach((caller) => {
-//   caller.forEach((item) => setTimeout(() => deleteEntity(item), 2000));
-// });
+// leftovers.forEach((item) =>
+//   setTimeout(() => {
+//     deleteEntity(item);
+//   }, 5000)
+// );
 
 // const deleteAll = (row, col) => {
 //   deleteEntity('polyanet', row, col);

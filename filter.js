@@ -31,3 +31,26 @@ const ye = rows
   }, [])
   .flat();
 console.log(ye);
+
+const random = () => Math.ceil(Math.random() * 100);
+
+const arr = (() => {
+  let array = [];
+  for (let i = 0; i < 100; i++) {
+    array.push(random());
+  }
+  return array;
+})();
+
+console.log(arr);
+
+const respond = async (num) => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${num}`);
+  const data = await res.json();
+  return data;
+};
+
+const responses = arr.map((num, i) => {
+  return { res: respond(num), id: i };
+});
+console.log(responses);
