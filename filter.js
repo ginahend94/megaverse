@@ -16,7 +16,7 @@ const ye = rows
           entityName = 'soloon';
           break;
         default:
-          entityName='space';
+          entityName = 'space';
       }
       const args = {
         entity: entityName,
@@ -31,4 +31,3 @@ const ye = rows
   }, [])
   .flat();
 console.log(ye);
-

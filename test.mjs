@@ -82,17 +82,28 @@ const deleteEntity = async (args) => {
     const data = await res.json();
     console.log(args);
     throw new Error('Error:', data);
+  } else {
+    console.log('success');
+    console.log(res);
   }
 };
 // console.log(callers);
 
-const leftovers = (async () => {
-  const res = await fetch('https://github.com/ginahend94/megaverse/blob/main/leftovers.json');
+const leftovers = await (async () => {
+  const res = await fetch(
+    'https://raw.githubusercontent.com/ginahend94/megaverse/main/leftovers.json?token=GHSAT0AAAAAABYFSVQS4XPFHJALPYE6UBYQYYP67MQ'
+  );
   const data = await res.json();
   return data;
-})()
+})();
 
-console.log(leftovers)
+// console.log(leftovers)
+
+leftovers.forEach((item) =>
+  setTimeout(() => {
+    deleteEntity(item);
+  }, 5000)
+);
 
 // callers.forEach((caller) => {
 //   caller.forEach((item) => setTimeout(() => deleteEntity(item), 2000));
