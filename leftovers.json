@@ -6,38 +6,13 @@
   },
   {
     "entity": "polyanet",
-    "row": 2,
-    "column": 2
-  },
-  {
-    "entity": "polyanet",
-    "row": 4,
-    "column": 3
-  },
-  {
-    "entity": "polyanet",
-    "row": 4,
-    "column": 6
-  },
-  {
-    "entity": "polyanet",
     "row": 4,
     "column": 19
-  },
-  {
-    "entity": "polyanet",
-    "row": 4,
-    "column": 23
   },
   {
     "entity": "cometh",
     "row": 4,
     "column": 29
-  },
-  {
-    "entity": "polyanet",
-    "row": 5,
-    "column": 3
   },
   {
     "entity": "polyanet",
@@ -48,21 +23,6 @@
     "entity": "polyanet",
     "row": 5,
     "column": 18
-  },
-  {
-    "entity": "polyanet",
-    "row": 9,
-    "column": 11
-  },
-  {
-    "entity": "cometh",
-    "row": 10,
-    "column": 2
-  },
-  {
-    "entity": "polyanet",
-    "row": 10,
-    "column": 7
   },
   {
     "entity": "polyanet",
@@ -83,11 +43,6 @@
     "entity": "polyanet",
     "row": 11,
     "column": 9
-  },
-  {
-    "entity": "polyanet",
-    "row": 11,
-    "column": 12
   },
   {
     "entity": "polyanet",
@@ -116,16 +71,6 @@
   },
   {
     "entity": "polyanet",
-    "row": 15,
-    "column": 8
-  },
-  {
-    "entity": "polyanet",
-    "row": 16,
-    "column": 6
-  },
-  {
-    "entity": "polyanet",
     "row": 16,
     "column": 7
   },
@@ -133,11 +78,6 @@
     "entity": "polyanet",
     "row": 16,
     "column": 12
-  },
-  {
-    "entity": "polyanet",
-    "row": 16,
-    "column": 14
   },
   {
     "entity": "polyanet",
@@ -156,11 +96,6 @@
   },
   {
     "entity": "polyanet",
-    "row": 18,
-    "column": 21
-  },
-  {
-    "entity": "polyanet",
     "row": 19,
     "column": 10
   },
@@ -172,21 +107,11 @@
   {
     "entity": "polyanet",
     "row": 21,
-    "column": 18
-  },
-  {
-    "entity": "polyanet",
-    "row": 21,
     "column": 23
   },
   {
     "entity": "polyanet",
     "row": 22,
     "column": 20
-  },
-  {
-    "entity": "polyanet",
-    "row": 24,
-    "column": 23
   }
 ]
