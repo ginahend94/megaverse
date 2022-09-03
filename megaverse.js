@@ -17,13 +17,10 @@ const sendRequest = async (args) => {
     }),
   });
   if (!res.ok) {
-    console.log(res);
     const data = await res.json();
     console.log(data);
     console.log(args);
     throw new Error(`Error: ${res.status}, ${res.statusText}`);
-  } else {
-    console.log('success', id);
   }
 };
 
@@ -32,11 +29,8 @@ const goal = await (async () => {
   const res = await fetch(`${url}map/${candidateId}/goal`);
   const data = await res.json();
   if (!res.ok) console.error('Error: ', res.status, res.statusText);
-  else console.log('success, goal received');
   return data.goal;
 })();
-
-let count = 0; // test
 
 const callers = goal.reduce((callers, row, i) => {
   // iterates through each row in goal
@@ -51,7 +45,6 @@ const callers = goal.reduce((callers, row, i) => {
       // object that will be returned
       row: i,
       column: j,
-      id: count, //test
     };
     let entity;
     if (itemArr.length > 1) {
@@ -62,7 +55,6 @@ const callers = goal.reduce((callers, row, i) => {
     } else entity = itemArr[0];
     argsObj.entity = entity;
     filtered.push(argsObj);
-    count++; // test
     return filtered;
   }, []);
   if (currentRow.length) callers.push(currentRow); // filters out empty arrays
@@ -76,8 +68,8 @@ const postEntitiy = async (args) => {
     ...args,
     method: 'POST',
   };
-  await sendRequest(argsObj)
-}
+  await sendRequest(argsObj);
+};
 
 const postAll = async () => {
   for (const row of callers) {
@@ -85,25 +77,11 @@ const postAll = async () => {
       await postEntitiy(caller);
     }
   }
-}
+};
 
 postAll();
 
-// FAKE API for TESTING
-const random = () => Math.floor(Math.random() * 10);
-const writeId = async (item) => {
-  const rand = random();
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log(item);
-      resolve();
-      console.log(`Resolved after ${rand} seconds.`);
-    }, 1000 * rand);
-  });
-};
-
-// DELETION CODE
-
+// To delete entities
 const deleteEntity = async (args) => {
   const argsObj = {
     ...args,
@@ -111,29 +89,6 @@ const deleteEntity = async (args) => {
   };
   await sendRequest(argsObj);
 };
-
-const test = [
-  [
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-    { id: 8 },
-    { id: 9 },
-    { id: 10 },
-  ],
-  [
-    { id: 11 },
-    { id: 12 },
-    { id: 13 },
-    { id: 14 },
-    { id: 15 },
-  ],
-];
-
 const deleteAll = async () => {
   for (const row of callers) {
     for (const caller of row) {
