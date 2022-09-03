@@ -4,7 +4,7 @@ const candidateId = '6a98f65e-7883-4566-a536-1670d5be5964';
 const url = 'https://challenge.crossmint.io/api/';
 
 const sendRequest = async (args) => {
-  const { entity, id, method, ...rest } = { ...args }; // pull out only body args
+  const { entity, method, ...rest } = { ...args }; // pull out only body args
   const res = await fetch(`${url}${entity}s`, {
     method,
     headers: {
@@ -17,10 +17,10 @@ const sendRequest = async (args) => {
     }),
   });
   if (!res.ok) {
+    console.error(`Error: ${res.status}, ${res.statusText}`);
+    console.log('Args: ', args); // Log which entity caused the error
     const data = await res.json();
     console.log(data);
-    console.log(args);
-    throw new Error(`Error: ${res.status}, ${res.statusText}`);
   }
 };
 
@@ -32,9 +32,9 @@ const goal = await (async () => {
   return data.goal;
 })();
 
-const callers = goal.reduce((callers, row, i) => {
-  // iterates through each row in goal
-  const currentRow = row.reduce((filtered, item, j) => {
+const entities = goal.reduce((entities, row, i) => {
+  // iterates through each row in goal array, filter and map simultaneously
+  const currentRow = row.reduce((filtered, item, j) => { 
     item = item.toLowerCase();
     if (item == 'space') {
       return filtered; // filters out space entities
@@ -47,9 +47,9 @@ const callers = goal.reduce((callers, row, i) => {
       column: j,
     };
     let entity;
-    if (itemArr.length > 1) {
+    if (itemArr.length > 1) { // comeths and soloons have a color/direction in front
       entity = itemArr[1];
-      // Create direction or color argument
+      // Create direction/color argument
       if (entity == 'cometh') argsObj.direction = itemArr[0];
       if (entity == 'soloon') argsObj.color = itemArr[0];
     } else entity = itemArr[0];
@@ -57,11 +57,9 @@ const callers = goal.reduce((callers, row, i) => {
     filtered.push(argsObj);
     return filtered;
   }, []);
-  if (currentRow.length) callers.push(currentRow); // filters out empty arrays
-  return callers;
+  if (currentRow.length) entities.push(currentRow); // filters out empty arrays
+  return entities;
 }, []);
-
-// console.log(callers);
 
 const postEntitiy = async (args) => {
   const argsObj = {
@@ -71,17 +69,6 @@ const postEntitiy = async (args) => {
   await sendRequest(argsObj);
 };
 
-const postAll = async () => {
-  for (const row of callers) {
-    for (const caller of row) {
-      await postEntitiy(caller);
-    }
-  }
-};
-
-postAll();
-
-// To delete entities
 const deleteEntity = async (args) => {
   const argsObj = {
     ...args,
@@ -89,12 +76,17 @@ const deleteEntity = async (args) => {
   };
   await sendRequest(argsObj);
 };
-const deleteAll = async () => {
-  for (const row of callers) {
-    for (const caller of row) {
-      await deleteEntity(caller);
+
+const editAllEntities = async (callback) => {
+  for (const row of entities) {
+    for (const entity of row) {
+      await callback(entity);
     }
-    console.log('Finished row');
   }
-  console.log('done');
+  console.log('all done :)');
 };
+
+const deleteAll = () => editAllEntities(deleteEntity);
+const postAll = () => editAllEntities(postEntitiy);
+
+postAll();
