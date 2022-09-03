@@ -1,3 +1,6 @@
+// Gina Henderson
+// 2022-09-02
+
 import fetch from 'node-fetch';
 
 const candidateId = '6a98f65e-7883-4566-a536-1670d5be5964';
